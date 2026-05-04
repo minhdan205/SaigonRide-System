@@ -18,15 +18,9 @@ namespace SaigonRideSystem.Controllers
         // GET: /Account/Login
         public IActionResult Login()
         {
-            if (HttpContext.Session.GetString("UserType") == "Admin")
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserType")))
             {
-                return RedirectToAction("Index", "Station");
-            }
-
-            if (HttpContext.Session.GetString("UserType") == "Local" ||
-                HttpContext.Session.GetString("UserType") == "Tourist")
-            {
-                return RedirectToAction("UserHome");
+                return RedirectToAction("Home");
             }
 
             return View();
@@ -58,12 +52,28 @@ namespace SaigonRideSystem.Controllers
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserType", user.UserType.ToString());
 
-            if (user.UserType == UserType.Admin)
+            return RedirectToAction("Home");
+        }
+
+        // GET: /Account/Home
+        public async Task<IActionResult> Home()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
             {
-                return RedirectToAction("Index", "Station");
+                return RedirectToAction("Login");
             }
 
-            return RedirectToAction("UserHome");
+            var user = await _context.Users.FindAsync(userId.Value);
+
+            if (user == null)
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login");
+            }
+
+            return View(user);
         }
 
         // GET: /Account/UserHome

@@ -27,6 +27,9 @@
                         @if (userType == "Admin")
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Home">Home</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Station" asp-action="Index">Stations</a>
                             </li>
                             <li class="nav-item">
@@ -39,7 +42,7 @@
                         else if (userType == "Local" || userType == "Tourist")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="UserHome">User Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Home">Home</a>
                             </li>
                         }
                         else
