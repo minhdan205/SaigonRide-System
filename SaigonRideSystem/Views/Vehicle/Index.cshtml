@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Manage Vehicles";
+}
+
+<h2>Manage Vehicles</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Vehicle</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vehicle ID</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Assigned Station</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.VehicleId</td>
+                <td>@vehicle.Category</td>
+                <td>@vehicle.Status</td>
+                <td>@vehicle.Station?.StationName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@vehicle.VehicleId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@vehicle.VehicleId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@vehicle.VehicleId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
