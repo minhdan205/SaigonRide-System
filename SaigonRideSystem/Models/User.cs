@@ -15,6 +15,12 @@ namespace SaigonRideSystem.Models
         [StringLength(150)]
         public string Email { get; set; } = string.Empty;
 
+        [StringLength(20)]
+        public string? PhoneNumber { get; set; }
+
+        [StringLength(100)]
+        public string? Country { get; set; }
+
         [Required]
         [StringLength(255)]
         public string PasswordHash { get; set; } = string.Empty;

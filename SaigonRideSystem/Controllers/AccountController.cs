@@ -93,7 +93,60 @@ namespace SaigonRideSystem.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Landing");
+        }
+
+        // GET: /Account/SignUp
+        public IActionResult SignUp()
+        {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserType")))
+            {
+                return RedirectToAction("Home");
+            }
+
+            return View();
+        }
+
+        // POST: /Account/SignUp
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp(SignUpViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool duplicateEmail = await _context.Users.AnyAsync(u => u.Email == model.Email);
+
+            if (duplicateEmail)
+            {
+                ModelState.AddModelError("Email", "Email already exists.");
+                return View(model);
+            }
+
+            bool isVietnameseUser = SignUpViewModel.IsVietnam(model.Country);
+
+            var user = new User
+            {
+                Name = model.FullName,
+                Email = model.Email,
+                PasswordHash = PasswordHelper.HashPassword(model.Password),
+                PhoneNumber = model.PhoneNumber,
+                Country = model.Country,
+                UserType = isVietnameseUser ? UserType.Local : UserType.Tourist,
+                Passport = isVietnameseUser ? null : model.Passport
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+            HttpContext.Session.SetString("UserName", user.Name);
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserType", user.UserType.ToString());
+
+            return RedirectToAction("Home");
         }
     }
 }

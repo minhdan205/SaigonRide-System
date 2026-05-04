@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.User>
+
+@{
+    ViewData["Title"] = "Admin Accounts";
+}
+
+<h2>Admin Accounts</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Account</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Manage Users</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>User Type</th>
+            <th>Phone Number</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>********</td>
+                <td>@user.UserType</td>
+                <td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "-" : user.PhoneNumber)</td>
+                <td>@(string.IsNullOrWhiteSpace(user.Country) ? "-" : user.Country)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@user.UserId" asp-route-returnAction="AdminAccounts" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@user.UserId" asp-route-returnAction="AdminAccounts" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@user.UserId" asp-route-returnAction="AdminAccounts" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No admin accounts found.</div>
+}

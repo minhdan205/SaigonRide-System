@@ -1,49 +1,39 @@
-﻿@model IEnumerable<SaigonRideSystem.Models.User>
-
-@{
+﻿@{
     ViewData["Title"] = "Manage Users";
 }
 
 <h2>Manage Users</h2>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
+<p class="text-muted">Choose the type of account you want to manage.</p>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
+<div class="row mt-4">
+    <div class="col-md-6 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h4>Admin Accounts</h4>
+                <p class="text-muted">
+                    View and manage system administrator accounts.
+                </p>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New User</a>
-</p>
+                <a asp-controller="User" asp-action="AdminAccounts" class="btn btn-primary">
+                    Manage Admin Accounts
+                </a>
+            </div>
+        </div>
+    </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Passport</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.Name</td>
-                <td>@user.Email</td>
-                <td>@user.UserType</td>
-                <td>@(string.IsNullOrWhiteSpace(user.Passport) ? "-" : user.Passport)</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@user.UserId" class="btn btn-sm btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@user.UserId" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="col-md-6 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h4>User Accounts</h4>
+                <p class="text-muted">
+                    View and manage Local Commuter and Foreign Tourist accounts.
+                </p>
+
+                <a asp-controller="User" asp-action="UserAccounts" class="btn btn-success">
+                    Manage User Accounts
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

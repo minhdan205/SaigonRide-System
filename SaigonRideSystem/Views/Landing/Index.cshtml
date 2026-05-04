@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "SaigonRide";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaigonRide - Smart Vehicle Rental</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <style>
+            body {
+                min-height: 100vh;
+                background: linear-gradient(135deg, #0d6efd 0%, #20c997 100%);
+                color: #212529;
+            }
+
+            .hero-section {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 16px;
+            }
+
+            .hero-card {
+                max-width: 900px;
+                width: 100%;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.96);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+                padding: 48px;
+            }
+
+            .brand-badge {
+                display: inline-block;
+                padding: 8px 16px;
+                border-radius: 999px;
+                background: #e7f1ff;
+                color: #0d6efd;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .feature-box {
+                background: #f8f9fa;
+                border-radius: 16px;
+                padding: 18px;
+                height: 100%;
+            }
+
+            .login-btn {
+                padding: 14px 40px;
+                font-size: 18px;
+                border-radius: 999px;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="hero-section">
+        <div class="hero-card text-center">
+            <div class="brand-badge">SaigonRide System</div>
+
+            <h1 class="display-5 fw-bold mb-3">
+                Smart Vehicle Rental for Ho Chi Minh City
+            </h1>
+
+            <p class="lead text-muted mb-4">
+                Rent bicycles and electric scooters easily, return them at any station,
+                and enjoy a flexible smart mobility experience.
+            </p>
+
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h5>🚲 Flexible Rental</h5>
+                        <p class="text-muted mb-0">
+                            Pick up a vehicle from one station and return it to another.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h5>💳 Smart Payment</h5>
+                        <p class="text-muted mb-0">
+                            Support local and international payment methods.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h5>📍 Station Management</h5>
+                        <p class="text-muted mb-0">
+                            Track stations, vehicles, inventory, and reports in real time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary login-btn">
+                Login to SaigonRide
+            </a>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

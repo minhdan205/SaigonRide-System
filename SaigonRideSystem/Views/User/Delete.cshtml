@@ -22,14 +22,22 @@
             <dt class="col-sm-3">User Type</dt>
             <dd class="col-sm-9">@Model.UserType</dd>
 
+            <dt class="col-sm-3">Phone Number</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "-" : Model.PhoneNumber)</dd>
+
+            <dt class="col-sm-3">Country</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Country) ? "-" : Model.Country)</dd>
+
             <dt class="col-sm-3">Passport</dt>
             <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Passport) ? "-" : Model.Passport)</dd>
         </dl>
 
         <form asp-action="Delete" method="post">
             <input type="hidden" asp-for="UserId" />
+            <input type="hidden" name="returnAction" value="@ViewBag.ReturnAction" />
+
             <button type="submit" class="btn btn-danger">Delete</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <a asp-action="@ViewBag.ReturnAction" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>

@@ -21,6 +21,18 @@
                 <dt class="col-sm-3">Email</dt>
                 <dd class="col-sm-9">@Model.Email</dd>
 
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "Not provided" : Model.PhoneNumber)</dd>
+
+                <dt class="col-sm-3">Country</dt>
+                <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Country) ? "Not provided" : Model.Country)</dd>
+
+                @if (Model.UserType == UserType.Tourist)
+                {
+                    <dt class="col-sm-3">Passport Number</dt>
+                    <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Passport) ? "Not provided" : Model.Passport)</dd>
+                }
+
                 <dt class="col-sm-3">Role</dt>
                 <dd class="col-sm-9">@roleName</dd>
             </dl>
@@ -32,11 +44,12 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h4>Admin Dashboard</h4>
-                <p class="text-muted">Manage stations, vehicles, and user accounts.</p>
+                <p class="text-muted">Manage stations, vehicles, user accounts and rental report.</p>
 
-                <a asp-controller="Station" asp-action="Index" class="btn btn-primary me-2">Manage Stations</a>
-                <a asp-controller="Vehicle" asp-action="Index" class="btn btn-success me-2">Manage Vehicles</a>
-                <a asp-controller="User" asp-action="Index" class="btn btn-warning me-2">Manage Users</a>
+                <a asp-controller="Station" asp-action="Index" class="btn btn-primary me-2 mb-2">Manage Stations</a>
+                <a asp-controller="Vehicle" asp-action="Index" class="btn btn-success me-2 mb-2">Manage Vehicles</a>
+                <a asp-controller="User" asp-action="Index" class="btn btn-warning me-2 mb-2">Manage Users</a>
+                <a asp-controller="Report" asp-action="Index" class="btn btn-info me-2 mb-2">Manage Reports</a>
             </div>
         </div>
     }

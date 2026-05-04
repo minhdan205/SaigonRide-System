@@ -8,11 +8,12 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="UserId" />
+    <input type="hidden" name="returnAction" value="@ViewBag.ReturnAction" />
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
     <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
+        <label asp-for="Name" class="form-label">Full Name</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
@@ -24,10 +25,15 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="PasswordHash" class="form-label">Password</label>
-        <input asp-for="PasswordHash" type="password" class="form-control" value="" />
-        <span asp-validation-for="PasswordHash" class="text-danger"></span>
-        <div class="form-text">Enter a password again when updating this user.</div>
+        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Country" class="form-label">Country</label>
+        <input asp-for="Country" class="form-control" />
+        <span asp-validation-for="Country" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -37,13 +43,46 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Passport" class="form-label">Passport (required for Tourist)</label>
+        <label asp-for="Passport" class="form-label">Passport</label>
         <input asp-for="Passport" class="form-control" />
         <span asp-validation-for="Passport" class="text-danger"></span>
+        <div class="form-text">Required for Tourist users.</div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmPasswordModal">
+        Save
+    </button>
+
+    <a asp-action="@ViewBag.ReturnAction" class="btn btn-secondary">Back to List</a>
+
+    <div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmPasswordModalLabel">Confirm Update</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Please enter Admin Account Password to confirm this update.</p>
+
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Admin Password</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" required />
+                    </div>
+
+                    <div class="text-muted small">
+                        Only an authorized admin can confirm and save account changes.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm and Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 
 @section Scripts {

@@ -1,0 +1,89 @@
+﻿@model SaigonRideSystem.Models.SignUpViewModel
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Create SaigonRide Account</h2>
+
+                <form asp-action="SignUp" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Country" class="form-label"></label>
+                        <input asp-for="Country" class="form-control" id="countryInput" placeholder="Vietnam, USA, Japan..." />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3" id="passportGroup" style="display:none;">
+                        <label asp-for="Passport" class="form-label"></label>
+                        <input asp-for="Passport" class="form-control" />
+                        <span asp-validation-for="Passport" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <span>Already have an account?</span>
+                    <a asp-controller="Account" asp-action="Login">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function isVietnam(country) {
+            const value = country.trim().toLowerCase();
+            return value === "vietnam" || value === "viet nam" || value === "việt nam";
+        }
+
+        function togglePassport() {
+            const country = document.getElementById("countryInput").value;
+            const passportGroup = document.getElementById("passportGroup");
+
+            if (country.trim() !== "" && !isVietnam(country)) {
+                passportGroup.style.display = "block";
+            } else {
+                passportGroup.style.display = "none";
+            }
+        }
+
+        document.getElementById("countryInput").addEventListener("input", togglePassport);
+        togglePassport();
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.RevenueReportItem>
+
+@{
+    ViewData["Title"] = "Revenue Report";
+}
+
+<h2>Revenue Report by Vehicle Category</h2>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Vehicle Category</th>
+            <th>Total Transactions</th>
+            <th>Total Revenue</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VehicleCategory</td>
+                <td>@item.TotalTransactions</td>
+                <td>@item.TotalRevenue.ToString("N0") VND</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No payment data available yet.
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to Reports</a>

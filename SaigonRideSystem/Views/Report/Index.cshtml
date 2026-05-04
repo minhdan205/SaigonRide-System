@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<h2>Admin Reports</h2>
+
+<div class="row mt-4">
+    <div class="col-md-6 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4>Revenue Report</h4>
+                <p class="text-muted">View total revenue grouped by vehicle category.</p>
+                <a asp-action="Revenue" class="btn btn-primary">View Revenue Report</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4>Station Inventory Report</h4>
+                <p class="text-muted">View station capacity, inventory, and low-inventory status.</p>
+                <a asp-action="StationInventory" class="btn btn-success">View Station Inventory Report</a>
+            </div>
+        </div>
+    </div>
+</div>

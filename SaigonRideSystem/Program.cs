@@ -36,7 +36,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Landing}/{action=Index}/{id?}");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -54,6 +54,8 @@ using (var scope = app.Services.CreateScope())
             Email = adminEmail,
             PasswordHash = PasswordHelper.HashPassword("admin123"),
             UserType = UserType.Admin,
+            PhoneNumber = "N/A",
+            Country = "Vietnam",
             Passport = null
         };
 
@@ -64,6 +66,8 @@ using (var scope = app.Services.CreateScope())
         existingAdmin.Name = "System Admin";
         existingAdmin.PasswordHash = PasswordHelper.HashPassword("admin123");
         existingAdmin.UserType = UserType.Admin;
+        existingAdmin.PhoneNumber = "N/A";
+        existingAdmin.Country = "Vietnam";
         existingAdmin.Passport = null;
     }
 

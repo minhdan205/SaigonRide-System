@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.StationInventoryReportItem>
+
+@{
+    ViewData["Title"] = "Station Inventory Report";
+}
+
+<h2>Station Inventory Report</h2>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Station Name</th>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Current Inventory</th>
+            <th>Utilization Rate</th>
+            <th>Inventory Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var station in Model)
+        {
+            <tr>
+                <td>@station.StationName</td>
+                <td>@station.Location</td>
+                <td>@station.Capacity</td>
+                <td>@station.CurrentInventory</td>
+                <td>@station.UtilizationRate.ToString("N2")%</td>
+                <td>
+                    @if (station.IsLowInventory)
+                    {
+                        <span class="badge bg-danger">Low Inventory</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Normal</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Reports</a>
