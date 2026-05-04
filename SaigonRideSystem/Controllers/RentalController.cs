@@ -155,7 +155,7 @@ namespace SaigonRideSystem.Controllers
         // POST: /Rental/ReturnConfirmed
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReturnConfirmed(int rentalId, int returnStationId)
+        public async Task<IActionResult> ReturnConfirmed(int rentalId, int returnStationId, string? discountCode)
         {
             if (!IsNormalUser())
             {
@@ -187,6 +187,22 @@ namespace SaigonRideSystem.Controllers
                 return RedirectToAction(nameof(ActiveRental));
             }
 
+            DiscountCode? appliedCode = null;
+
+            if (!string.IsNullOrWhiteSpace(discountCode))
+            {
+                string normalizedCode = discountCode.Trim().ToUpper();
+
+                appliedCode = await _context.DiscountCodes
+                    .FirstOrDefaultAsync(d => d.Code == normalizedCode && d.IsActive);
+
+                if (appliedCode == null)
+                {
+                    TempData["ErrorMessage"] = "Invalid or inactive discount code.";
+                    return RedirectToAction(nameof(Return), new { id = rental.RentalId });
+                }
+            }
+
             DateTime endTime = DateTime.Now;
 
             var pricingResult = _pricingService.CalculateFare(
@@ -197,12 +213,29 @@ namespace SaigonRideSystem.Controllers
                 returnStation.CurrentInventory
             );
 
+            decimal finalFare = pricingResult.FinalFare;
+            decimal codeDiscountAmount = 0m;
+
+            if (appliedCode != null)
+            {
+                codeDiscountAmount = finalFare * appliedCode.DiscountPercent / 100m;
+                finalFare -= codeDiscountAmount;
+            }
+
             rental.EndTime = endTime;
             rental.ReturnStationId = returnStation.StationId;
-            rental.TotalFare = pricingResult.FinalFare;
+            rental.TotalFare = finalFare;
             rental.DiscountApplied = pricingResult.DiscountApplied;
             rental.DiscountAmount = pricingResult.DiscountAmount;
             rental.Status = RentalStatus.Completed;
+
+            if (appliedCode != null)
+            {
+                rental.DiscountCodeId = appliedCode.DiscountCodeId;
+                rental.AppliedDiscountCode = appliedCode.Code;
+                rental.CodeDiscountPercent = appliedCode.DiscountPercent;
+                rental.CodeDiscountAmount = codeDiscountAmount;
+            }
 
             rental.Vehicle.Status = VehicleStatus.Available;
             rental.Vehicle.StationId = returnStation.StationId;
@@ -238,6 +271,7 @@ namespace SaigonRideSystem.Controllers
                 .Include(r => r.Vehicle)
                 .Include(r => r.StartStation)
                 .Include(r => r.ReturnStation)
+                .Include(r => r.DiscountCode)
                 .Include(r => r.Payment)
                 .FirstOrDefaultAsync(r => r.RentalId == id && r.UserId == userId.Value);
 
@@ -325,6 +359,7 @@ namespace SaigonRideSystem.Controllers
                 .Include(r => r.Vehicle)
                 .Include(r => r.StartStation)
                 .Include(r => r.ReturnStation)
+                .Include(r => r.DiscountCode)
                 .Include(r => r.Payment)
                 .FirstOrDefaultAsync(r => r.RentalId == id && r.UserId == userId.Value);
 

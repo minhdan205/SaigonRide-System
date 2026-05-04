@@ -6,6 +6,11 @@
 
 <h2>Return Vehicle</h2>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <div class="card shadow-sm">
     <div class="card-body">
         <h4>Rental #@Model.RentalId</h4>
@@ -21,6 +26,14 @@
             <div class="mb-3">
                 <label class="form-label">Return Station</label>
                 <select name="returnStationId" class="form-select" asp-items="ViewBag.ReturnStationId"></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Discount Code (optional)</label>
+                <input type="text" name="discountCode" class="form-control" placeholder="Enter discount code if you have one" />
+                <div class="form-text">
+                    Enter your discount code before confirming the return.
+                </div>
             </div>
 
             <button type="submit" class="btn btn-warning">Confirm Return</button>

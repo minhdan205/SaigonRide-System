@@ -36,6 +36,17 @@ namespace SaigonRideSystem.Models
 
         public decimal DiscountAmount { get; set; }
 
+        public int? DiscountCodeId { get; set; }
+
+        public DiscountCode? DiscountCode { get; set; }
+
+        [StringLength(30)]
+        public string? AppliedDiscountCode { get; set; }
+
+        public int? CodeDiscountPercent { get; set; }
+
+        public decimal CodeDiscountAmount { get; set; }
+
         [Required]
         public RentalStatus Status { get; set; }
 

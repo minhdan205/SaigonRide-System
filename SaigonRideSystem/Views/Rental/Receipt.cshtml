@@ -23,9 +23,19 @@
         <p><strong>Return Station:</strong> @Model.ReturnStation?.StationName</p>
         <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
         <p><strong>End Time:</strong> @Model.EndTime?.ToString("dd/MM/yyyy HH:mm")</p>
-        <p><strong>Discount Applied:</strong> @(Model.DiscountApplied ? "Yes" : "No")</p>
-        <p><strong>Discount Amount:</strong> @Model.DiscountAmount.ToString("N0") VND</p>
-        <p><strong>Total Fare:</strong> @Model.TotalFare.ToString("N0") VND</p>
+
+        <hr />
+
+        <p><strong>Station Discount Applied:</strong> @(Model.DiscountApplied ? "Yes" : "No")</p>
+        <p><strong>Station Discount Amount:</strong> @Model.DiscountAmount.ToString("N0") VND</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.AppliedDiscountCode))
+        {
+            <p><strong>Discount Code:</strong> @Model.AppliedDiscountCode (@Model.CodeDiscountPercent%)</p>
+            <p><strong>Code Discount Amount:</strong> @Model.CodeDiscountAmount.ToString("N0") VND</p>
+        }
+
+        <h5><strong>Total Fare:</strong> @Model.TotalFare.ToString("N0") VND</h5>
 
         <hr />
 

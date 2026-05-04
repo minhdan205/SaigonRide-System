@@ -16,6 +16,7 @@ namespace SaigonRideSystem.Data
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<SupportTicket> SupportTickets { get; set; }
+        public DbSet<DiscountCode> DiscountCodes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -114,6 +115,20 @@ namespace SaigonRideSystem.Data
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DiscountCode>()
+                .HasIndex(d => d.Code)
+                .IsUnique();
+
+            modelBuilder.Entity<Rental>()
+                .HasOne(r => r.DiscountCode)
+                .WithMany()
+                .HasForeignKey(r => r.DiscountCodeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Rental>()
+                .Property(r => r.CodeDiscountAmount)
+                .HasPrecision(18, 2);
         }
     }
 }

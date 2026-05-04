@@ -1,0 +1,26 @@
+﻿@model SaigonRideSystem.Models.DiscountCode
+
+@{
+    ViewData["Title"] = "Delete Discount Code";
+}
+
+<h2>Delete Discount Code</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this discount code?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Code Name:</strong> @Model.CodeName</p>
+        <p><strong>Code:</strong> @Model.Code</p>
+        <p><strong>Discount:</strong> @Model.DiscountPercent%</p>
+        <p><strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")</p>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="DiscountCodeId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

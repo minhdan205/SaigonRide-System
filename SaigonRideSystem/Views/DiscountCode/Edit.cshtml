@@ -1,0 +1,45 @@
+﻿@model SaigonRideSystem.Models.DiscountCode
+
+@{
+    ViewData["Title"] = "Edit Discount Code";
+}
+
+<h2>Edit Discount Code</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="DiscountCodeId" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="CodeName" class="form-label">Code Name</label>
+        <input asp-for="CodeName" class="form-control" />
+        <span asp-validation-for="CodeName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Code" class="form-label">Discount Code</label>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DiscountPercent" class="form-label">Discount Percent</label>
+        <select asp-for="DiscountPercent" class="form-select" asp-items="ViewBag.DiscountOptions"></select>
+        <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Active</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

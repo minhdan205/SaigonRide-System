@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.DiscountCode>
+
+@{
+    ViewData["Title"] = "Discount Codes";
+}
+
+<h2>Discount Codes</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create Discount Code</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Code Name</th>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var code in Model)
+        {
+            <tr>
+                <td>@code.CodeName</td>
+                <td><strong>@code.Code</strong></td>
+                <td>@code.DiscountPercent%</td>
+                <td>
+                    @if (code.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+                <td>@code.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@code.DiscountCodeId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@code.DiscountCodeId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No discount codes created yet.</div>
+}
