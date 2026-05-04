@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SaigonRideSystem.Data;
 using SaigonRideSystem.Models;
-using System.Security.Cryptography;
-using System.Text;
+using SaigonRideSystem.Services;
 
 namespace SaigonRideSystem.Controllers
 {
@@ -65,7 +64,7 @@ namespace SaigonRideSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                user.PasswordHash = HashPassword(user.PasswordHash);
+                user.PasswordHash = PasswordHelper.HashPassword(user.PasswordHash);
 
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -119,7 +118,7 @@ namespace SaigonRideSystem.Controllers
             {
                 try
                 {
-                    user.PasswordHash = HashPassword(user.PasswordHash);
+                    user.PasswordHash = PasswordHelper.HashPassword(user.PasswordHash);
 
                     _context.Update(user);
                     await _context.SaveChangesAsync();
@@ -200,11 +199,5 @@ namespace SaigonRideSystem.Controllers
             ViewBag.UserTypes = new SelectList(Enum.GetValues(typeof(UserType)));
         }
 
-        private static string HashPassword(string password)
-        {
-            using SHA256 sha256 = SHA256.Create();
-            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
-        }
     }
 }

@@ -15,6 +15,7 @@
 
     public enum UserType
     {
+        Admin,
         Local,
         Tourist
     }
