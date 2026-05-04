@@ -15,6 +15,7 @@ namespace SaigonRideSystem.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<SupportTicket> SupportTickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -99,6 +100,20 @@ namespace SaigonRideSystem.Data
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<SupportTicket>()
+                .Property(t => t.IssueType)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<SupportTicket>()
+                .Property(t => t.Status)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.SupportTicket>
+
+@{
+    ViewData["Title"] = "Support Reports";
+}
+
+<h2>Support Reports</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Issue Type</th>
+            <th>Status</th>
+            <th>Submitted At</th>
+            <th>Response</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.User?.Name</td>
+                <td>@ticket.User?.Email</td>
+                <td>@ticket.IssueType</td>
+                <td>@ticket.Status</td>
+                <td>@ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @if (string.IsNullOrWhiteSpace(ticket.AdminResponse))
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Responded</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ticket.SupportTicketId" class="btn btn-sm btn-primary">
+                        View / Respond
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No support reports submitted yet.
+    </div>
+}

@@ -10,6 +10,13 @@
             <div class="card-body">
                 <h2 class="text-center mb-4">SaigonRide Login</h2>
 
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
                 <form asp-action="Login" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -29,6 +36,10 @@
                 </form>
 
                 <div class="text-center mt-3">
+                    <a asp-controller="Account" asp-action="ForgotPassword">Forgot password?</a>
+                </div>
+
+                <div class="text-center mt-2">
                     <span>Don't have an account?</span>
                     <a asp-controller="Account" asp-action="SignUp">Sign up here</a>
                 </div>

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.SupportTicket>
+
+@{
+    ViewData["Title"] = "My Support Requests";
+}
+
+<h2>My Support Requests</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Report New Issue</a>
+</p>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Issue Type</th>
+            <th>Status</th>
+            <th>Submitted At</th>
+            <th>Admin Response</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.IssueType</td>
+                <td>@ticket.Status</td>
+                <td>@ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @if (string.IsNullOrWhiteSpace(ticket.AdminResponse))
+                    {
+                        <span class="badge bg-warning text-dark">Waiting for response</span>
+                    }
+                    else if (!ticket.IsResponseReadByUser)
+                    {
+                        <span class="badge bg-danger">New Response</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Viewed</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ticket.SupportTicketId" class="btn btn-sm btn-info">
+                        Details
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You have not submitted any support requests yet.
+    </div>
+}

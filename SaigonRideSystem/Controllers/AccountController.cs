@@ -148,5 +148,48 @@ namespace SaigonRideSystem.Controllers
 
             return RedirectToAction("Home");
         }
+
+        // GET: /Account/ForgotPassword
+        public IActionResult ForgotPassword()
+        {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserType")))
+            {
+                return RedirectToAction("Home");
+            }
+
+            return View();
+        }
+
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string email = model.Email.Trim().ToLower();
+            string phone = model.PhoneNumber.Trim();
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u =>
+                    u.Email.ToLower() == email &&
+                    u.PhoneNumber != null &&
+                    u.PhoneNumber.Trim() == phone);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Email and phone number do not match any account.");
+                return View(model);
+            }
+
+            user.PasswordHash = PasswordHelper.HashPassword(model.NewPassword);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Password reset successfully. Please login with your new password.";
+            return RedirectToAction("Login");
+        }
     }
 }

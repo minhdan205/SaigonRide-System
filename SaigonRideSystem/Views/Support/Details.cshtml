@@ -1,0 +1,100 @@
+﻿@model SaigonRideSystem.Models.SupportTicket
+@using SaigonRideSystem.Models
+
+@{
+    ViewData["Title"] = "Support Details";
+    var userType = Context.Session.GetString("UserType");
+}
+
+<h2>Support Request Details</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <h4>Issue Information</h4>
+
+        <dl class="row">
+            <dt class="col-sm-3">User</dt>
+            <dd class="col-sm-9">@Model.User?.Name</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.User?.Email</dd>
+
+            <dt class="col-sm-3">Issue Type</dt>
+            <dd class="col-sm-9">@Model.IssueType</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Description) ? "-" : Model.Description)</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Model.Status</dd>
+
+            <dt class="col-sm-3">Submitted At</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <h4>Admin Response</h4>
+
+        @if (string.IsNullOrWhiteSpace(Model.AdminResponse))
+        {
+            <div class="alert alert-warning">
+                No response from admin yet.
+            </div>
+        }
+        else
+        {
+            <p>@Model.AdminResponse</p>
+            <p class="text-muted">
+                Responded at: @Model.RespondedAt?.ToString("dd/MM/yyyy HH:mm")
+            </p>
+        }
+    </div>
+</div>
+
+@if (userType == "Admin")
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4>Respond to User</h4>
+
+            <form asp-action="Respond" method="post">
+                <input type="hidden" name="id" value="@Model.SupportTicketId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Response Message</label>
+                    <textarea name="adminResponse" class="form-control" rows="4"
+                              placeholder="Example: We have dispatched a technician to your location."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Update Status</label>
+                    <select name="status" class="form-select">
+                        <option value="InProgress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Response</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to Reports</a>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <a asp-action="MyRequests" class="btn btn-secondary">Back to My Requests</a>
+}

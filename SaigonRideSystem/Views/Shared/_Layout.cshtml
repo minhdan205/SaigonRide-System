@@ -41,6 +41,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Reports</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Support" asp-action="Index">Support Reports</a>
+                            </li>
                         }
                         else if (userType == "Local" || userType == "Tourist")
                         {
@@ -52,6 +55,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Rental" asp-action="ActiveRental">My Rental</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Support" asp-action="MyRequests">Support</a>
                             </li>
                         }
                         else

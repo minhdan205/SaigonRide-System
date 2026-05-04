@@ -1,0 +1,36 @@
+﻿@model SaigonRideSystem.Models.SupportTicket
+
+@{
+    ViewData["Title"] = "Report an Issue";
+}
+
+<h2>Report an Issue</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="IssueType" class="form-label">Issue Type</label>
+        <select asp-for="IssueType" class="form-select" asp-items="ViewBag.IssueTypes"></select>
+        <span asp-validation-for="IssueType" class="text-danger"></span>
+        <div class="form-text">
+            Examples: Traffic accident, technical problem, station full, or other issues.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="5"
+                  placeholder="Describe the problem. Example: broken wheel, broken lock, brake issue, station is full..."></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Report</button>
+    <a asp-action="MyRequests" class="btn btn-secondary">Back</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

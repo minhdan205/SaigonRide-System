@@ -44,12 +44,27 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h4>Admin Dashboard</h4>
-                <p class="text-muted">Manage stations, vehicles, user accounts and rental report.</p>
+                <p class="text-muted">Manage stations, vehicles, user accounts, reports, and user support requests.</p>
 
-                <a asp-controller="Station" asp-action="Index" class="btn btn-primary me-2 mb-2">Manage Stations</a>
-                <a asp-controller="Vehicle" asp-action="Index" class="btn btn-success me-2 mb-2">Manage Vehicles</a>
-                <a asp-controller="User" asp-action="Index" class="btn btn-warning me-2 mb-2">Manage Users</a>
-                <a asp-controller="Report" asp-action="Index" class="btn btn-info me-2 mb-2">Manage Reports</a>
+                <a asp-controller="Station" asp-action="Index" class="btn btn-primary me-2 mb-2">
+                    Manage Stations
+                </a>
+
+                <a asp-controller="Vehicle" asp-action="Index" class="btn btn-success me-2 mb-2">
+                    Manage Vehicles
+                </a>
+
+                <a asp-controller="User" asp-action="Index" class="btn btn-warning me-2 mb-2">
+                    Manage Users
+                </a>
+
+                <a asp-controller="Report" asp-action="Index" class="btn btn-info me-2 mb-2">
+                    Manage Reports
+                </a>
+
+                <a asp-controller="Support" asp-action="Index" class="btn btn-dark me-2 mb-2">
+                    Support Reports
+                </a>
             </div>
         </div>
     }
@@ -58,7 +73,7 @@
         <div class="card shadow-sm">
             <div class="card-body text-center">
                 <h4>SaigonRide User Area</h4>
-                <p class="text-muted">Start using SaigonRide rental services.</p>
+                <p class="text-muted">Start using SaigonRide rental services or report an issue when you need support.</p>
 
                 <div class="d-grid gap-2 col-md-4 mx-auto">
                     <a asp-controller="Rental" asp-action="AvailableVehicles" class="btn btn-primary">
@@ -67,6 +82,10 @@
 
                     <a asp-controller="Rental" asp-action="ActiveRental" class="btn btn-warning">
                         My Active Rental
+                    </a>
+
+                    <a asp-controller="Support" asp-action="MyRequests" class="btn btn-dark">
+                        Support
                     </a>
                 </div>
             </div>

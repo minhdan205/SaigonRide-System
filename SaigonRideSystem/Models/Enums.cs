@@ -42,4 +42,20 @@
         Paid,
         Failed
     }
+
+    public enum SupportIssueType
+    {
+        TrafficAccident,
+        TechnicalProblem,
+        StationFull,
+        Other
+    }
+
+    public enum SupportTicketStatus
+    {
+        Submitted,
+        InProgress,
+        Resolved,
+        Rejected
+    }
 }
