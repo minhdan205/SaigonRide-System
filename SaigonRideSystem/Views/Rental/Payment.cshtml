@@ -1,0 +1,36 @@
+﻿@model SaigonRideSystem.Models.Rental
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h2>Payment</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4>Rental Summary</h4>
+
+        <p><strong>Vehicle:</strong> @Model.VehicleId</p>
+        <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
+        <p><strong>Start Station:</strong> @Model.StartStation?.StationName</p>
+        <p><strong>Return Station:</strong> @Model.ReturnStation?.StationName</p>
+        <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>End Time:</strong> @Model.EndTime?.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Discount Applied:</strong> @(Model.DiscountApplied ? "Yes" : "No")</p>
+        <p><strong>Discount Amount:</strong> @Model.DiscountAmount.ToString("N0") VND</p>
+        <h5><strong>Total Fare:</strong> @Model.TotalFare.ToString("N0") VND</h5>
+
+        <hr />
+
+        <form asp-action="Pay" method="post">
+            <input type="hidden" name="rentalId" value="@Model.RentalId" />
+
+            <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <select name="paymentMethod" class="form-select" asp-items="ViewBag.PaymentMethods"></select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Pay Now</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model SaigonRideSystem.Models.Rental?
+
+@{
+    ViewData["Title"] = "My Active Rental";
+}
+
+<h2>My Active Rental</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (Model == null)
+{
+    <div class="alert alert-info">
+        You do not have an active rental.
+    </div>
+
+    <a asp-action="AvailableVehicles" class="btn btn-primary">View Available Vehicles</a>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4>Rental #@Model.RentalId</h4>
+
+            <p><strong>Vehicle:</strong> @Model.VehicleId</p>
+            <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
+            <p><strong>Start Station:</strong> @Model.StartStation?.StationName</p>
+            <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+
+            <a asp-action="Return" asp-route-id="@Model.RentalId" class="btn btn-warning">Return Vehicle</a>
+        </div>
+    </div>
+}

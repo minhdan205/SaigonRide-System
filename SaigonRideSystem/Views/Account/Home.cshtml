@@ -48,10 +48,13 @@
                 <p class="text-muted">Start using SaigonRide rental services.</p>
 
                 <div class="d-grid gap-2 col-md-4 mx-auto">
-                    <a class="btn btn-primary disabled">View Available Vehicles</a>
-                    <a class="btn btn-success disabled">Rent Vehicle</a>
-                    <a class="btn btn-warning disabled">Return Vehicle</a>
-                    <a class="btn btn-secondary disabled">Make Payment</a>
+                    <a asp-controller="Rental" asp-action="AvailableVehicles" class="btn btn-primary">
+                        View Available Vehicles
+                    </a>
+
+                    <a asp-controller="Rental" asp-action="ActiveRental" class="btn btn-warning">
+                        My Active Rental
+                    </a>
                 </div>
             </div>
         </div>

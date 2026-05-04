@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Available Vehicles";
+}
+
+<h2>Available Vehicles</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="row">
+    @foreach (var vehicle in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>@vehicle.VehicleId</h5>
+                    <p class="mb-1"><strong>Category:</strong> @vehicle.Category</p>
+                    <p class="mb-1"><strong>Status:</strong> @vehicle.Status</p>
+                    <p class="mb-3"><strong>Station:</strong> @vehicle.Station?.StationName</p>
+
+                    <form asp-action="Rent" asp-route-id="@vehicle.VehicleId" method="post">
+                        <button type="submit" class="btn btn-primary w-100">Rent Vehicle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No available vehicles at the moment.</div>
+}

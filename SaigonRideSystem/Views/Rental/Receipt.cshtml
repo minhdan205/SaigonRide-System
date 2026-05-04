@@ -1,0 +1,39 @@
+﻿@model SaigonRideSystem.Models.Rental
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+<h2>Rental Receipt</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4>Receipt for Rental #@Model.RentalId</h4>
+
+        <hr />
+
+        <p><strong>Vehicle:</strong> @Model.VehicleId</p>
+        <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
+        <p><strong>Start Station:</strong> @Model.StartStation?.StationName</p>
+        <p><strong>Return Station:</strong> @Model.ReturnStation?.StationName</p>
+        <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>End Time:</strong> @Model.EndTime?.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Discount Applied:</strong> @(Model.DiscountApplied ? "Yes" : "No")</p>
+        <p><strong>Discount Amount:</strong> @Model.DiscountAmount.ToString("N0") VND</p>
+        <p><strong>Total Fare:</strong> @Model.TotalFare.ToString("N0") VND</p>
+
+        <hr />
+
+        <p><strong>Payment Method:</strong> @Model.Payment?.PaymentMethod</p>
+        <p><strong>Payment Status:</strong> @Model.Payment?.PaymentStatus</p>
+        <p><strong>Payment Date:</strong> @Model.Payment?.PaymentDate.ToString("dd/MM/yyyy HH:mm")</p>
+
+        <a asp-action="AvailableVehicles" class="btn btn-primary">Rent Another Vehicle</a>
+        <a asp-controller="Account" asp-action="Home" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
