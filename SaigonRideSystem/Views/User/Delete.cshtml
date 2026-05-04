@@ -1,0 +1,35 @@
+﻿@model SaigonRideSystem.Models.User
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<h2>Delete User</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this user?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">User Type</dt>
+            <dd class="col-sm-9">@Model.UserType</dd>
+
+            <dt class="col-sm-3">Passport</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Passport) ? "-" : Model.Passport)</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="UserId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
