@@ -95,7 +95,10 @@ namespace SaigonRideSystem.Controllers
             _context.Rentals.Add(rental);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Vehicle rented successfully.";
+            rental.RentalCode = $"Rent.No{rental.RentalId:D3}";
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Vehicle rented successfully. Your rental code is {rental.RentalCode}.";
             return RedirectToAction(nameof(ActiveRental));
         }
 
@@ -369,6 +372,34 @@ namespace SaigonRideSystem.Controllers
             }
 
             return View(rental);
+        }
+
+        // GET: /Rental/History
+        public async Task<IActionResult> History()
+        {
+            if (!IsNormalUser())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var rentals = await _context.Rentals
+                .Include(r => r.Vehicle)
+                .Include(r => r.StartStation)
+                .Include(r => r.ReturnStation)
+                .Include(r => r.Payment)
+                .Include(r => r.DiscountCode)
+                .Where(r => r.UserId == userId.Value)
+                .OrderByDescending(r => r.StartTime)
+                .ToListAsync();
+
+            return View(rentals);
         }
 
         private bool IsNormalUser()

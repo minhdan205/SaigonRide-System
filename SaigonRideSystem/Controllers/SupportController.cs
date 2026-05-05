@@ -33,6 +33,7 @@ namespace SaigonRideSystem.Controllers
 
             var tickets = await _context.SupportTickets
                 .Include(t => t.User)
+                .Include(t => t.Rental)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
@@ -51,6 +52,7 @@ namespace SaigonRideSystem.Controllers
             }
 
             var tickets = await _context.SupportTickets
+                .Include(t => t.Rental)
                 .Where(t => t.UserId == userId.Value)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
@@ -58,7 +60,7 @@ namespace SaigonRideSystem.Controllers
             return View(tickets);
         }
 
-        // User: create issue report
+        // User: create general issue report
         public IActionResult Create()
         {
             if (!IsNormalUser())
@@ -87,6 +89,7 @@ namespace SaigonRideSystem.Controllers
             }
 
             ModelState.Remove("User");
+            ModelState.Remove("Rental");
             ModelState.Remove("AdminResponse");
 
             if (ticket.IssueType == SupportIssueType.Other && string.IsNullOrWhiteSpace(ticket.Description))
@@ -117,6 +120,132 @@ namespace SaigonRideSystem.Controllers
             return View(ticket);
         }
 
+        // GET: /Support/CreateFromRental?rentalId=1
+        public async Task<IActionResult> CreateFromRental(int rentalId)
+        {
+            if (!IsNormalUser())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var rental = await _context.Rentals
+                .Include(r => r.Vehicle)
+                .Include(r => r.StartStation)
+                .FirstOrDefaultAsync(r =>
+                    r.RentalId == rentalId &&
+                    r.UserId == userId.Value &&
+                    r.Status == RentalStatus.Active);
+
+            if (rental == null)
+            {
+                TempData["ErrorMessage"] = "Active rental not found.";
+                return RedirectToAction("ActiveRental", "Rental");
+            }
+
+            LoadIssueTypes();
+
+            ViewBag.RentalCode = string.IsNullOrWhiteSpace(rental.RentalCode)
+                ? $"Rent.No{rental.RentalId:D3}"
+                : rental.RentalCode;
+
+            ViewBag.VehicleId = rental.VehicleId;
+            ViewBag.StartStation = rental.StartStation?.StationName;
+
+            var ticket = new SupportTicket
+            {
+                RentalId = rental.RentalId,
+                VehicleId = rental.VehicleId
+            };
+
+            return View(ticket);
+        }
+
+        // POST: /Support/CreateFromRental
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFromRental(SupportTicket ticket)
+        {
+            if (!IsNormalUser())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ModelState.Remove("User");
+            ModelState.Remove("Rental");
+            ModelState.Remove("AdminResponse");
+
+            var rental = await _context.Rentals
+                .Include(r => r.StartStation)
+                .FirstOrDefaultAsync(r =>
+                    r.RentalId == ticket.RentalId &&
+                    r.UserId == userId.Value &&
+                    r.Status == RentalStatus.Active);
+
+            if (rental == null)
+            {
+                TempData["ErrorMessage"] = "Active rental not found.";
+                return RedirectToAction("ActiveRental", "Rental");
+            }
+
+            if ((ticket.IssueType == SupportIssueType.TrafficAccident ||
+                 ticket.IssueType == SupportIssueType.TechnicalProblem) &&
+                string.IsNullOrWhiteSpace(ticket.CurrentLocation))
+            {
+                ModelState.AddModelError("CurrentLocation", "Please provide your current location so the support team can assist you.");
+            }
+
+            if (ticket.IssueType == SupportIssueType.Other && string.IsNullOrWhiteSpace(ticket.Description))
+            {
+                ModelState.AddModelError("Description", "Please describe your issue.");
+            }
+
+            if (ticket.IssueType == SupportIssueType.TechnicalProblem && string.IsNullOrWhiteSpace(ticket.Description))
+            {
+                ModelState.AddModelError("Description", "Please describe the technical problem, such as broken wheel, lock issue, or brake problem.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                ticket.UserId = userId.Value;
+                ticket.RentalId = rental.RentalId;
+                ticket.VehicleId = rental.VehicleId;
+                ticket.Status = SupportTicketStatus.Submitted;
+                ticket.CreatedAt = DateTime.Now;
+                ticket.IsResponseReadByUser = false;
+
+                _context.SupportTickets.Add(ticket);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Your support request has been submitted successfully.";
+                return RedirectToAction(nameof(MyRequests));
+            }
+
+            LoadIssueTypes();
+
+            ViewBag.RentalCode = string.IsNullOrWhiteSpace(rental.RentalCode)
+                ? $"Rent.No{rental.RentalId:D3}"
+                : rental.RentalCode;
+
+            ViewBag.VehicleId = rental.VehicleId;
+            ViewBag.StartStation = rental.StartStation?.StationName;
+
+            return View(ticket);
+        }
+
         // Both admin and owner user can view detail
         public async Task<IActionResult> Details(int id)
         {
@@ -130,6 +259,7 @@ namespace SaigonRideSystem.Controllers
 
             var ticket = await _context.SupportTickets
                 .Include(t => t.User)
+                .Include(t => t.Rental)
                 .FirstOrDefaultAsync(t => t.SupportTicketId == id);
 
             if (ticket == null)

@@ -83,5 +83,26 @@ namespace SaigonRideSystem.Controllers
         {
             return HttpContext.Session.GetString("UserType") == "Admin";
         }
+
+        // GET: /Report/RentalHistory
+        public async Task<IActionResult> RentalHistory()
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var rentals = await _context.Rentals
+                .Include(r => r.User)
+                .Include(r => r.Vehicle)
+                .Include(r => r.StartStation)
+                .Include(r => r.ReturnStation)
+                .Include(r => r.Payment)
+                .Include(r => r.DiscountCode)
+                .OrderByDescending(r => r.StartTime)
+                .ToListAsync();
+
+            return View(rentals);
+        }
     }
 }

@@ -10,6 +10,14 @@
     <div class="card-body">
         <h4>Rental Summary</h4>
 
+        @{
+            var rentalCode = string.IsNullOrWhiteSpace(Model.RentalCode)
+                ? $"Rent.No{Model.RentalId:D3}"
+                : Model.RentalCode;
+        }
+
+        <p><strong>Rental Code:</strong> @rentalCode</p>
+
         <p><strong>Vehicle:</strong> @Model.VehicleId</p>
         <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
         <p><strong>Start Station:</strong> @Model.StartStation?.StationName</p>

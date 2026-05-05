@@ -18,6 +18,9 @@
 <table class="table table-bordered table-striped mt-3">
     <thead>
         <tr>
+            <th>Rental Code</th>
+            <th>Vehicle ID</th>
+            <th>Current Location</th>
             <th>Issue Type</th>
             <th>Status</th>
             <th>Submitted At</th>
@@ -28,7 +31,19 @@
     <tbody>
         @foreach (var ticket in Model)
         {
+            var rentalCode = "-";
+
+            if (ticket.Rental != null)
+            {
+                rentalCode = string.IsNullOrWhiteSpace(ticket.Rental.RentalCode)
+                    ? $"Rent.No{ticket.Rental.RentalId:D3}"
+                    : ticket.Rental.RentalCode;
+            }
+
             <tr>
+                <td><strong>@rentalCode</strong></td>
+                <td>@(string.IsNullOrWhiteSpace(ticket.VehicleId) ? "-" : ticket.VehicleId)</td>
+                <td>@(string.IsNullOrWhiteSpace(ticket.CurrentLocation) ? "-" : ticket.CurrentLocation)</td>
                 <td>@ticket.IssueType</td>
                 <td>@ticket.Status</td>
                 <td>@ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>

@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.User>
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "User Accounts";
+
+    var localUsers = Model.Where(u => u.UserType == UserType.Local).ToList();
+    var touristUsers = Model.Where(u => u.UserType == UserType.Tourist).ToList();
 }
 
 <h2>User Accounts</h2>
@@ -21,13 +25,51 @@
     <a asp-action="Index" class="btn btn-secondary">Back to Manage Users</a>
 </p>
 
+<h4 class="mt-4">Local User Accounts</h4>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Password</th>
-            <th>User Type</th>
+            <th>Phone Number</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in localUsers)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>********</td>
+                <td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "-" : user.PhoneNumber)</td>
+                <td>@(string.IsNullOrWhiteSpace(user.Country) ? "-" : user.Country)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@user.UserId" asp-route-returnAction="UserAccounts" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@user.UserId" asp-route-returnAction="UserAccounts" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@user.UserId" asp-route-returnAction="UserAccounts" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!localUsers.Any())
+{
+    <div class="alert alert-info">No local user accounts found.</div>
+}
+
+<h4 class="mt-5">Tourist User Accounts</h4>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
             <th>Phone Number</th>
             <th>Country</th>
             <th>Passport</th>
@@ -35,13 +77,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var user in touristUsers)
         {
             <tr>
                 <td>@user.Name</td>
                 <td>@user.Email</td>
                 <td>********</td>
-                <td>@user.UserType</td>
                 <td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "-" : user.PhoneNumber)</td>
                 <td>@(string.IsNullOrWhiteSpace(user.Country) ? "-" : user.Country)</td>
                 <td>@(string.IsNullOrWhiteSpace(user.Passport) ? "-" : user.Passport)</td>
@@ -55,7 +96,7 @@
     </tbody>
 </table>
 
-@if (!Model.Any())
+@if (!touristUsers.Any())
 {
-    <div class="alert alert-info">No user accounts found.</div>
+    <div class="alert alert-info">No tourist user accounts found.</div>
 }

@@ -29,5 +29,16 @@ namespace SaigonRideSystem.Models
         public DateTime? RespondedAt { get; set; }
 
         public bool IsResponseReadByUser { get; set; } = false;
+
+        public int? RentalId { get; set; }
+
+        public Rental? Rental { get; set; }
+
+        [StringLength(30)]
+        public string? VehicleId { get; set; }
+
+        [StringLength(255)]
+        [Display(Name = "Current Location")]
+        public string? CurrentLocation { get; set; }
     }
 }

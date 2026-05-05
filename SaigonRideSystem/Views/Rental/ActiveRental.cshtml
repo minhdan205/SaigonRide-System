@@ -28,7 +28,13 @@ else
 {
     <div class="card shadow-sm">
         <div class="card-body">
-            <h4>Rental #@Model.RentalId</h4>
+            @{
+                var rentalCode = string.IsNullOrWhiteSpace(Model.RentalCode)
+                    ? $"Rent.No{Model.RentalId:D3}"
+                    : Model.RentalCode;
+            }
+
+            <h4>@rentalCode</h4>
 
             <p><strong>Vehicle:</strong> @Model.VehicleId</p>
             <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
@@ -36,7 +42,13 @@ else
             <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
             <p><strong>Status:</strong> @Model.Status</p>
 
-            <a asp-action="Return" asp-route-id="@Model.RentalId" class="btn btn-warning">Return Vehicle</a>
+            <a asp-action="Return" asp-route-id="@Model.RentalId" class="btn btn-warning me-2">
+                Return Vehicle
+            </a>
+
+            <a asp-controller="Support" asp-action="CreateFromRental" asp-route-rentalId="@Model.RentalId" class="btn btn-dark">
+                Support
+            </a>
         </div>
     </div>
 }

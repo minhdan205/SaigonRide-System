@@ -6,6 +6,9 @@ namespace SaigonRideSystem.Models
     {
         public int RentalId { get; set; }
 
+        [StringLength(20)]
+        public string? RentalCode { get; set; }
+
         [Required]
         public int UserId { get; set; }
 

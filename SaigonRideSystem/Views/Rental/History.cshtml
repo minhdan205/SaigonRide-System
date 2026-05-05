@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SaigonRideSystem.Models.Rental>
+
+@{
+    ViewData["Title"] = "My Rental History";
+}
+
+<h2>My Rental History</h2>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Rental Code</th>
+            <th>Vehicle</th>
+            <th>Category</th>
+            <th>Start Station</th>
+            <th>Return Station</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+            <th>Total Fare</th>
+            <th>Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rental in Model)
+        {
+            var rentalCode = string.IsNullOrWhiteSpace(rental.RentalCode)
+                ? $"Rent.No{rental.RentalId:D3}"
+                : rental.RentalCode;
+
+            <tr>
+                <td><strong>@rentalCode</strong></td>
+                <td>@rental.VehicleId</td>
+                <td>@rental.Vehicle?.Category</td>
+                <td>@rental.StartStation?.StationName</td>
+                <td>@(rental.ReturnStation?.StationName ?? "-")</td>
+                <td>@rental.StartTime.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(rental.EndTime?.ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                <td>@rental.Status</td>
+                <td>@rental.TotalFare.ToString("N0") VND</td>
+                <td>@(rental.Payment?.PaymentStatus.ToString() ?? "Not Paid")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You do not have any rental history yet.
+    </div>
+}
+
+<a asp-controller="Account" asp-action="Home" class="btn btn-secondary">Back to Home</a>

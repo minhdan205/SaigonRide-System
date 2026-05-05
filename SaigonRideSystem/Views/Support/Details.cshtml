@@ -29,6 +29,28 @@
             <dt class="col-sm-3">Email</dt>
             <dd class="col-sm-9">@Model.User?.Email</dd>
 
+            <dt class="col-sm-3">Rental Code</dt>
+            <dd class="col-sm-9">
+                @if (Model.Rental == null)
+                {
+                    <span>-</span>
+                }
+                else
+                {
+                    var rentalCode = string.IsNullOrWhiteSpace(Model.Rental.RentalCode)
+                        ? $"Rent.No{Model.Rental.RentalId:D3}"
+                        : Model.Rental.RentalCode;
+
+                    <strong>@rentalCode</strong>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Vehicle ID</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.VehicleId) ? "-" : Model.VehicleId)</dd>
+
+            <dt class="col-sm-3">Current Location</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.CurrentLocation) ? "-" : Model.CurrentLocation)</dd>
+
             <dt class="col-sm-3">Issue Type</dt>
             <dd class="col-sm-9">@Model.IssueType</dd>
 

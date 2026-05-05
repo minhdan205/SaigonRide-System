@@ -1,0 +1,59 @@
+﻿@model SaigonRideSystem.Models.SupportTicket
+
+@{
+    ViewData["Title"] = "Report Rental Issue";
+}
+
+<h2>Report Rental Issue</h2>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <h5>Rental Information</h5>
+
+        <p><strong>Rental Code:</strong> @ViewBag.RentalCode</p>
+        <p><strong>Vehicle ID:</strong> @ViewBag.VehicleId</p>
+        <p><strong>Start Station:</strong> @(ViewBag.StartStation ?? "-")</p>
+    </div>
+</div>
+
+<form asp-action="CreateFromRental" method="post">
+    <input type="hidden" asp-for="RentalId" />
+    <input type="hidden" asp-for="VehicleId" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="IssueType" class="form-label">Issue Type</label>
+        <select asp-for="IssueType" class="form-select" asp-items="ViewBag.IssueTypes"></select>
+        <span asp-validation-for="IssueType" class="text-danger"></span>
+        <div class="form-text">
+            Choose the issue type: traffic accident, technical problem, station full, or other.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CurrentLocation" class="form-label">Current Location</label>
+        <input asp-for="CurrentLocation" class="form-control"
+               placeholder="Example: Near Ben Thanh Market, District 1" />
+        <span asp-validation-for="CurrentLocation" class="text-danger"></span>
+        <div class="form-text">
+            Required if you need technical support at your current location.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="5"
+                  placeholder="Describe the issue. Example: broken brake, broken lock, flat tire, station is full..."></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Support Request</button>
+    <a asp-controller="Rental" asp-action="ActiveRental" class="btn btn-secondary">Back to Active Rental</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

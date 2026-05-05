@@ -13,7 +13,13 @@
 
 <div class="card shadow-sm">
     <div class="card-body">
-        <h4>Receipt for Rental #@Model.RentalId</h4>
+        @{
+            var rentalCode = string.IsNullOrWhiteSpace(Model.RentalCode)
+                ? $"Rent.No{Model.RentalId:D3}"
+                : Model.RentalCode;
+        }
+
+        <h4>Receipt for @rentalCode</h4>
 
         <hr />
 

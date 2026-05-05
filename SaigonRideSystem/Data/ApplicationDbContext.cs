@@ -129,6 +129,17 @@ namespace SaigonRideSystem.Data
             modelBuilder.Entity<Rental>()
                 .Property(r => r.CodeDiscountAmount)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Rental>()
+                .HasIndex(r => r.RentalCode)
+                .IsUnique()
+                .HasFilter("[RentalCode] IS NOT NULL");
+
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne(t => t.Rental)
+                .WithMany()
+                .HasForeignKey(t => t.RentalId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
