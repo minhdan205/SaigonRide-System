@@ -4,6 +4,16 @@
 @{
     ViewData["Title"] = "Home";
     var roleName = Model.UserType == UserType.Admin ? "Admin" : "User";
+
+        ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            IsActive = true
+        }
+    };
+
 }
 
 <div class="container mt-4">

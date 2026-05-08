@@ -1,4 +1,24 @@
-﻿@{
+﻿@using SaigonRideSystem.Models
+
+@{
+    ViewData["Title"] = "Manage Users";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Users",
+            IsActive = true
+        }
+    };
+}
+
+@{
     ViewData["Title"] = "Manage Users";
 }
 

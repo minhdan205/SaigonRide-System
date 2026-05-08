@@ -1,5 +1,21 @@
-﻿@{
+﻿@using SaigonRideSystem.Models
+
+@{
     ViewData["Title"] = "Reports";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Reports",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Admin Reports</h2>

@@ -6,6 +6,25 @@
 
     var localUsers = Model.Where(u => u.UserType == UserType.Local).ToList();
     var touristUsers = Model.Where(u => u.UserType == UserType.Tourist).ToList();
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Users",
+            Url = Url.Action("Index", "User")
+        },
+        new BreadcrumbItem
+        {
+            Title = "User Accounts",
+            IsActive = true
+        }
+    };
 }
 
 <h2>User Accounts</h2>

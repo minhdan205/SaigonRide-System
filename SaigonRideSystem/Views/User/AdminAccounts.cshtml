@@ -2,6 +2,25 @@
 
 @{
     ViewData["Title"] = "Admin Accounts";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Users",
+            Url = Url.Action("Index", "User")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Admin Accounts",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Admin Accounts</h2>

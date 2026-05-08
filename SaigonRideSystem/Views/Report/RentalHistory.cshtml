@@ -1,7 +1,28 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.Rental>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "Rental History";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Reports",
+            Url = Url.Action("Index", "Report")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Rental History",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Rental History</h2>

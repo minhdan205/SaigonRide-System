@@ -1,0 +1,30 @@
+﻿@using SaigonRideSystem.Models
+
+@{
+    var breadcrumbs = ViewData["Breadcrumbs"] as List<BreadcrumbItem>;
+}
+
+@if (breadcrumbs != null && breadcrumbs.Any())
+{
+    <nav aria-label="breadcrumb" class="bg-light border-bottom mb-3">
+        <div class="container">
+            <ol class="breadcrumb py-2 mb-0">
+                @foreach (var item in breadcrumbs)
+                {
+                    if (item.IsActive || string.IsNullOrWhiteSpace(item.Url))
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">
+                            @item.Title
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@item.Url">@item.Title</a>
+                        </li>
+                    }
+                }
+            </ol>
+        </div>
+    </nav>
+}

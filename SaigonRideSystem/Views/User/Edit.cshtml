@@ -2,6 +2,38 @@
 
 @{
     ViewData["Title"] = "Edit User";
+
+    var returnAction = ViewBag.ReturnAction as string ?? "Index";
+
+    var accountListTitle = returnAction == "AdminAccounts"
+        ? "Admin Accounts"
+        : returnAction == "UserAccounts"
+            ? "User Accounts"
+            : "Manage Users";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Users",
+            Url = Url.Action("Index", "User")
+        },
+        new BreadcrumbItem
+        {
+            Title = accountListTitle,
+            Url = Url.Action(returnAction, "User")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Edit User",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Edit User</h2>
