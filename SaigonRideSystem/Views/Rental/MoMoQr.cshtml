@@ -1,0 +1,47 @@
+﻿@model SaigonRideSystem.Models.Rental
+
+@{
+    ViewData["Title"] = "MoMo QR Payment";
+}
+
+<h2>MoMo QR Payment</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+        <h4>Scan QR Code to Pay</h4>
+
+        <p class="text-muted">
+            Please scan this QR code using MoMo to complete your rental payment.
+        </p>
+
+        <div class="my-4">
+            <img src="@ViewBag.QrUrl" alt="MoMo Payment QR Code" class="img-fluid border rounded p-2" />
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body text-start">
+                <p><strong>Rental Code:</strong> @ViewBag.RentalCode</p>
+                <p><strong>Vehicle ID:</strong> @Model.VehicleId</p>
+                <p><strong>Amount:</strong> @Model.TotalFare.ToString("N0") VND</p>
+                <p><strong>Payment Method:</strong> MoMo</p>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            This is a simulated MoMo QR payment for demo purposes.
+            After scanning and completing payment, click Done Payment.
+        </div>
+
+        <form asp-action="ConfirmMoMoPayment" method="post">
+            <input type="hidden" name="rentalId" value="@Model.RentalId" />
+
+            <button type="submit" class="btn btn-success">
+                Done Payment
+            </button>
+
+            <a asp-action="Payment" asp-route-id="@Model.RentalId" class="btn btn-secondary">
+                Back to Payment
+            </a>
+        </form>
+    </div>
+</div>

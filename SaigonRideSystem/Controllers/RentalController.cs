@@ -327,20 +327,97 @@ namespace SaigonRideSystem.Controllers
                 return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
             }
 
-            var payment = new Payment
+            if (paymentMethod == PaymentMethod.MoMo)
             {
-                RentalId = rental.RentalId,
-                PaymentMethod = paymentMethod,
-                Amount = rental.TotalFare,
-                PaymentDate = DateTime.Now,
-                PaymentStatus = PaymentStatus.Paid
-            };
+                return RedirectToAction(nameof(MoMoQr), new { rentalId = rental.RentalId });
+            }
 
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
+            return await CompletePayment(rental, paymentMethod);
+        }
 
-            TempData["SuccessMessage"] = "Payment completed successfully.";
-            return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
+        // GET: /Rental/MoMoQr?rentalId=5
+        public async Task<IActionResult> MoMoQr(int rentalId)
+        {
+            if (!IsNormalUser())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var rental = await _context.Rentals
+                .Include(r => r.User)
+                .Include(r => r.Vehicle)
+                .Include(r => r.Payment)
+                .FirstOrDefaultAsync(r => r.RentalId == rentalId && r.UserId == userId.Value);
+
+            if (rental == null)
+            {
+                return NotFound();
+            }
+
+            if (rental.Payment != null)
+            {
+                return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
+            }
+
+            string rentalCode = string.IsNullOrWhiteSpace(rental.RentalCode)
+                ? $"Rent.No{rental.RentalId:D3}"
+                : rental.RentalCode;
+
+            string qrText =
+                $"SAIGONRIDE MOMO PAYMENT\n" +
+                $"Rental Code: {rentalCode}\n" +
+                $"Vehicle ID: {rental.VehicleId}\n" +
+                $"Amount: {rental.TotalFare:N0} VND\n" +
+                $"Note: Payment for {rentalCode}";
+
+            string encodedText = Uri.EscapeDataString(qrText);
+
+            ViewBag.RentalCode = rentalCode;
+            ViewBag.QrText = qrText;
+            ViewBag.QrUrl = $"https://quickchart.io/qr?text={encodedText}&size=260&margin=2";
+
+            return View(rental);
+        }
+
+        // POST: /Rental/ConfirmMoMoPayment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmMoMoPayment(int rentalId)
+        {
+            if (!IsNormalUser())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var rental = await _context.Rentals
+                .Include(r => r.Payment)
+                .FirstOrDefaultAsync(r => r.RentalId == rentalId && r.UserId == userId.Value);
+
+            if (rental == null)
+            {
+                return NotFound();
+            }
+
+            if (rental.Payment != null)
+            {
+                return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
+            }
+
+            return await CompletePayment(rental, PaymentMethod.MoMo);
         }
 
         // GET: /Rental/Receipt/5
@@ -359,6 +436,7 @@ namespace SaigonRideSystem.Controllers
             }
 
             var rental = await _context.Rentals
+                .Include(r => r.User)
                 .Include(r => r.Vehicle)
                 .Include(r => r.StartStation)
                 .Include(r => r.ReturnStation)
@@ -400,6 +478,24 @@ namespace SaigonRideSystem.Controllers
                 .ToListAsync();
 
             return View(rentals);
+        }
+
+        private async Task<IActionResult> CompletePayment(Rental rental, PaymentMethod paymentMethod)
+        {
+            var payment = new Payment
+            {
+                RentalId = rental.RentalId,
+                PaymentMethod = paymentMethod,
+                Amount = rental.TotalFare,
+                PaymentDate = DateTime.Now,
+                PaymentStatus = PaymentStatus.Paid
+            };
+
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Payment completed successfully.";
+            return RedirectToAction(nameof(Receipt), new { id = rental.RentalId });
         }
 
         private bool IsNormalUser()
