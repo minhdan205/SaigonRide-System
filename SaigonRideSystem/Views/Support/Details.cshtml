@@ -4,6 +4,49 @@
 @{
     ViewData["Title"] = "Support Details";
     var userType = Context.Session.GetString("UserType");
+
+    if (userType == "Admin")
+    {
+        ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem
+            {
+                Title = "Home",
+                Url = Url.Action("Home", "Account")
+            },
+            new BreadcrumbItem
+            {
+                Title = "Support Reports",
+                Url = Url.Action("Index", "Support")
+            },
+            new BreadcrumbItem
+            {
+                Title = "Support Details",
+                IsActive = true
+            }
+        };
+    }
+    else
+    {
+        ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem
+            {
+                Title = "Home",
+                Url = Url.Action("Home", "Account")
+            },
+            new BreadcrumbItem
+            {
+                Title = "My Support Requests",
+                Url = Url.Action("MyRequests", "Support")
+            },
+            new BreadcrumbItem
+            {
+                Title = "Support Details",
+                IsActive = true
+            }
+        };
+    }
 }
 
 <h2>Support Request Details</h2>

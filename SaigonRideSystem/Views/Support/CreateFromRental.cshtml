@@ -1,7 +1,27 @@
 ﻿@model SaigonRideSystem.Models.SupportTicket
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "Report Rental Issue";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Active Rental",
+            Url = Url.Action("ActiveRental", "Rental")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Report Rental Issue",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Report Rental Issue</h2>

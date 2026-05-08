@@ -1,7 +1,28 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.StationInventoryReportItem>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "Station Inventory Report";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Reports",
+            Url = Url.Action("Index", "Report")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Station Inventory Report",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Station Inventory Report</h2>

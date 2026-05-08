@@ -1,7 +1,28 @@
 ﻿@model SaigonRideSystem.Models.Station
 
+@using SaigonRideSystem.Models
+
 @{
-    ViewData["Title"] = "Add New Station";
+    ViewData["Title"] = "Create Station";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Stations",
+            Url = Url.Action("Index", "Station")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Create Station",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Add New Station</h2>

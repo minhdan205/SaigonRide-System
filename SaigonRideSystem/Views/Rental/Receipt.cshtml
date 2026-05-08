@@ -1,4 +1,5 @@
 ﻿@model SaigonRideSystem.Models.Rental
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "Receipt";
@@ -6,6 +7,35 @@
     var rentalCode = string.IsNullOrWhiteSpace(Model.RentalCode)
         ? $"Rent.No{Model.RentalId:D3}"
         : Model.RentalCode;
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Active Rental",
+            Url = Url.Action("ActiveRental", "Rental")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Return Vehicle",
+            Url = Url.Action("Return", "Rental", new { id = Model.RentalId })
+        },
+        new BreadcrumbItem
+        {
+            Title = "Payment",
+            Url = Url.Action("Payment", "Rental", new { id = Model.RentalId })
+        },
+        new BreadcrumbItem
+        {
+            Title = "Rental Receipt",
+            IsActive = true
+        }
+    };
 }
 
 <style>

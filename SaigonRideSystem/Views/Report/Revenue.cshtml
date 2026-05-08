@@ -1,7 +1,28 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.RevenueReportItem>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "Revenue Report";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Reports",
+            Url = Url.Action("Index", "Report")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Revenue Report",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Revenue Report by Vehicle Category</h2>

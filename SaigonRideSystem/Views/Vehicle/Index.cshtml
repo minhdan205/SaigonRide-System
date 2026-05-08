@@ -1,7 +1,23 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.Vehicle>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "Manage Vehicles";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Vehicles",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Manage Vehicles</h2>

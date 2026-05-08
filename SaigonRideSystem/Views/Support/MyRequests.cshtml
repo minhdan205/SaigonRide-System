@@ -1,7 +1,23 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.SupportTicket>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "My Support Requests";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Support Requests",
+            IsActive = true
+        }
+    };
 }
 
 <h2>My Support Requests</h2>

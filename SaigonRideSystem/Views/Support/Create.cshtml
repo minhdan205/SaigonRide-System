@@ -1,7 +1,27 @@
 ﻿@model SaigonRideSystem.Models.SupportTicket
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "Report an Issue";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Support Requests",
+            Url = Url.Action("MyRequests", "Support")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Report an Issue",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Report an Issue</h2>

@@ -1,7 +1,32 @@
 ﻿@model SaigonRideSystem.Models.Rental
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "MoMo QR Payment";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Rental History",
+            Url = Url.Action("History", "Rental")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Payment",
+            Url = Url.Action("Payment", "Rental", new { id = Model.RentalId })
+        },
+        new BreadcrumbItem
+        {
+            Title = "MoMo QR Payment",
+            IsActive = true
+        }
+    };
 }
 
 <h2>MoMo QR Payment</h2>

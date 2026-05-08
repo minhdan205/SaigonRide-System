@@ -1,7 +1,23 @@
 ﻿@model IEnumerable<SaigonRideSystem.Models.Station>
 
+@using SaigonRideSystem.Models
+
 @{
     ViewData["Title"] = "Manage Stations";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Manage Stations",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Manage Stations</h2>

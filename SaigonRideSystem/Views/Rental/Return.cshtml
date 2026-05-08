@@ -1,7 +1,27 @@
 ﻿@model SaigonRideSystem.Models.Rental
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "Return Vehicle";
+
+    ViewData["Breadcrumbs"] = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem
+        {
+            Title = "Home",
+            Url = Url.Action("Home", "Account")
+        },
+        new BreadcrumbItem
+        {
+            Title = "My Active Rental",
+            Url = Url.Action("ActiveRental", "Rental")
+        },
+        new BreadcrumbItem
+        {
+            Title = "Return Vehicle",
+            IsActive = true
+        }
+    };
 }
 
 <h2>Return Vehicle</h2>
