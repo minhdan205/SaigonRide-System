@@ -22,13 +22,11 @@
         },
         new BreadcrumbItem
         {
-            Title = "Return Vehicle",
-            Url = Url.Action("Return", "Rental", new { id = Model.RentalId })
+            Title = "Return Vehicle"
         },
         new BreadcrumbItem
         {
-            Title = "Payment",
-            Url = Url.Action("Payment", "Rental", new { id = Model.RentalId })
+            Title = "Payment"
         },
         new BreadcrumbItem
         {
@@ -64,6 +62,30 @@
             padding: 0 !important;
         }
     }
+
+    .invoice-section-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 6px;
+    }
+
+    .invoice-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 8px;
+    }
+
+    .invoice-label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .invoice-value {
+        text-align: right;
+        color: #212529;
+    }
 </style>
 
 <h2 class="no-print">Rental Receipt</h2>
@@ -82,57 +104,139 @@
 
         <hr />
 
-        <h5>Invoice Information</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <h5 class="invoice-section-title">Invoice Information</h5>
 
-        <p><strong>Rental Code:</strong> @rentalCode</p>
-        <p><strong>Invoice Date:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Rental Code</span>
+                        <span class="invoice-value">@rentalCode</span>
+                    </div>
 
-        <hr />
+                    <div class="invoice-row">
+                        <span class="invoice-label">Invoice Date</span>
+                        <span class="invoice-value">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
 
-        <h5>Customer Information</h5>
+                <div class="mb-4">
+                    <h5 class="invoice-section-title">Customer Information</h5>
 
-        <p><strong>Customer Name:</strong> @Model.User?.Name</p>
-        <p><strong>Email:</strong> @Model.User?.Email</p>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Customer Name</span>
+                        <span class="invoice-value">@Model.User?.Name</span>
+                    </div>
 
-        <hr />
+                    <div class="invoice-row">
+                        <span class="invoice-label">Email</span>
+                        <span class="invoice-value">@Model.User?.Email</span>
+                    </div>
 
-        <h5>Rental Details</h5>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Phone Number</span>
+                        <span class="invoice-value">
+                            @(string.IsNullOrWhiteSpace(Model.User?.PhoneNumber) ? "-" : Model.User.PhoneNumber)
+                        </span>
+                    </div>
+                </div>
 
-        <p><strong>Vehicle:</strong> @Model.VehicleId</p>
-        <p><strong>Category:</strong> @Model.Vehicle?.Category</p>
-        <p><strong>Start Station:</strong> @Model.StartStation?.StationName</p>
-        <p><strong>Return Station:</strong> @Model.ReturnStation?.StationName</p>
-        <p><strong>Start Time:</strong> @Model.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
-        <p><strong>End Time:</strong> @Model.EndTime?.ToString("dd/MM/yyyy HH:mm")</p>
+                <div class="mb-4">
+                    <h5 class="invoice-section-title">Rental Details</h5>
 
-        <hr />
+                    <div class="invoice-row">
+                        <span class="invoice-label">Vehicle ID</span>
+                        <span class="invoice-value">@Model.VehicleId</span>
+                    </div>
 
-        <h5>Fare Summary</h5>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Category</span>
+                        <span class="invoice-value">@Model.Vehicle?.Category</span>
+                    </div>
 
-        <p><strong>Station Discount Applied:</strong> @(Model.DiscountApplied ? "Yes" : "No")</p>
-        <p><strong>Station Discount Amount:</strong> @Model.DiscountAmount.ToString("N0") VND</p>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Start Station</span>
+                        <span class="invoice-value">@Model.StartStation?.StationName</span>
+                    </div>
 
-        @if (!string.IsNullOrWhiteSpace(Model.AppliedDiscountCode))
-        {
-            <p><strong>Discount Code:</strong> @Model.AppliedDiscountCode (@Model.CodeDiscountPercent%)</p>
-            <p><strong>Code Discount Amount:</strong> @Model.CodeDiscountAmount.ToString("N0") VND</p>
-        }
+                    <div class="invoice-row">
+                        <span class="invoice-label">Return Station</span>
+                        <span class="invoice-value">@Model.ReturnStation?.StationName</span>
+                    </div>
 
-        <h4 class="mt-3"><strong>Total Fare:</strong> @Model.TotalFare.ToString("N0") VND</h4>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Start Time</span>
+                        <span class="invoice-value">@Model.StartTime.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
 
-        <hr />
+                    <div class="invoice-row">
+                        <span class="invoice-label">End Time</span>
+                        <span class="invoice-value">@Model.EndTime?.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+            </div>
 
-        <h5>Payment Information</h5>
+            <div class="col-md-6">
+                <div class="mb-4">
+                    <h5 class="invoice-section-title">Fare Summary</h5>
 
-        <p><strong>Payment Method:</strong> @Model.Payment?.PaymentMethod</p>
-        <p><strong>Payment Status:</strong> @Model.Payment?.PaymentStatus</p>
-        <p><strong>Payment Date:</strong> @Model.Payment?.PaymentDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    <div class="invoice-row">
+                        <span class="invoice-label">Station Discount Applied</span>
+                        <span class="invoice-value">@(Model.DiscountApplied ? "Yes" : "No")</span>
+                    </div>
 
-        <hr />
+                    <div class="invoice-row">
+                        <span class="invoice-label">Station Discount Amount</span>
+                        <span class="invoice-value">@Model.DiscountAmount.ToString("N0") VND</span>
+                    </div>
 
-        <p class="text-center text-muted">
-            Thank you for using SaigonRide.
-        </p>
+                    @if (!string.IsNullOrWhiteSpace(Model.AppliedDiscountCode))
+                    {
+                        <div class="invoice-row">
+                            <span class="invoice-label">Discount Code</span>
+                            <span class="invoice-value">@Model.AppliedDiscountCode (@Model.CodeDiscountPercent%)</span>
+                        </div>
+
+                        <div class="invoice-row">
+                            <span class="invoice-label">Code Discount Amount</span>
+                            <span class="invoice-value">@Model.CodeDiscountAmount.ToString("N0") VND</span>
+                        </div>
+                    }
+
+                    <hr />
+
+                    <div class="invoice-row">
+                        <span class="invoice-label fs-5">Total Fare</span>
+                        <span class="invoice-value fs-5 fw-bold">@Model.TotalFare.ToString("N0") VND</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="invoice-section-title">Payment Information</h5>
+
+                    <div class="invoice-row">
+                        <span class="invoice-label">Payment Method</span>
+                        <span class="invoice-value">@Model.Payment?.PaymentMethod</span>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span class="invoice-label">Payment Status</span>
+                        <span class="invoice-value">@Model.Payment?.PaymentStatus</span>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span class="invoice-label">Payment Date</span>
+                        <span class="invoice-value">@Model.Payment?.PaymentDate.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-light border">
+                    <p class="mb-0 text-muted">
+                        Thank you for using SaigonRide. Please keep this receipt for rental reference and support requests.
+                    </p>
+                </div>
+            </div>
+        </div>
 
         <div class="mt-4 no-print">
             <button onclick="window.print()" class="btn btn-success">
