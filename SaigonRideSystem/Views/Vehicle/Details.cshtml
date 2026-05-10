@@ -1,13 +1,18 @@
 ﻿@model SaigonRideSystem.Models.Vehicle
+@using SaigonRideSystem.Models
 
 @{
     ViewData["Title"] = "Vehicle Details";
+
+    var activeRental = ViewBag.ActiveRental as Rental;
 }
 
 <h2>Vehicle Details</h2>
 
-<div class="card">
+<div class="card shadow-sm mb-3">
     <div class="card-body">
+        <h4>Vehicle Information</h4>
+
         <dl class="row">
             <dt class="col-sm-3">Vehicle ID</dt>
             <dd class="col-sm-9">@Model.VehicleId</dd>
@@ -26,3 +31,83 @@
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
 </div>
+
+@if (Model.Status == VehicleStatus.InTransit && activeRental != null)
+{
+    var rentalCode = string.IsNullOrWhiteSpace(activeRental.RentalCode)
+        ? $"Rent.No{activeRental.RentalId:D3}"
+        : activeRental.RentalCode;
+
+    var duration = DateTime.Now - activeRental.StartTime;
+
+    <div class="card shadow-sm border-warning">
+        <div class="card-body">
+            <h4 class="text-warning">Current Rental Information</h4>
+            <p class="text-muted">
+                This vehicle is currently being rented by a user.
+            </p>
+
+            <hr />
+
+            <h5>Rental Details</h5>
+
+            <dl class="row">
+                <dt class="col-sm-3">Rental Code</dt>
+                <dd class="col-sm-9"><strong>@rentalCode</strong></dd>
+
+                <dt class="col-sm-3">Rental Status</dt>
+                <dd class="col-sm-9">@activeRental.Status</dd>
+
+                <dt class="col-sm-3">Start Station</dt>
+                <dd class="col-sm-9">@activeRental.StartStation?.StationName</dd>
+
+                <dt class="col-sm-3">Start Time</dt>
+                <dd class="col-sm-9">@activeRental.StartTime.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Current Duration</dt>
+                <dd class="col-sm-9">
+                    @((int)duration.TotalHours) hour(s) @duration.Minutes minute(s)
+                </dd>
+            </dl>
+
+            <hr />
+
+            <h5>Renter Information</h5>
+
+            <dl class="row">
+                <dt class="col-sm-3">Full Name</dt>
+                <dd class="col-sm-9">@activeRental.User?.Name</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@activeRental.User?.Email</dd>
+
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(activeRental.User?.PhoneNumber) ? "-" : activeRental.User.PhoneNumber)
+                </dd>
+
+                <dt class="col-sm-3">Country</dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(activeRental.User?.Country) ? "-" : activeRental.User.Country)
+                </dd>
+
+                <dt class="col-sm-3">User Type</dt>
+                <dd class="col-sm-9">@activeRental.User?.UserType</dd>
+
+                @if (activeRental.User?.UserType == UserType.Tourist)
+                {
+                    <dt class="col-sm-3">Passport</dt>
+                    <dd class="col-sm-9">
+                        @(string.IsNullOrWhiteSpace(activeRental.User?.Passport) ? "-" : activeRental.User.Passport)
+                    </dd>
+                }
+            </dl>
+        </div>
+    </div>
+}
+else if (Model.Status == VehicleStatus.InTransit && activeRental == null)
+{
+    <div class="alert alert-warning">
+        This vehicle is marked as In-Transit, but no active rental record was found.
+    </div>
+}

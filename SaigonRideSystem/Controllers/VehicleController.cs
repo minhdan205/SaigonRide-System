@@ -42,6 +42,15 @@ namespace SaigonRideSystem.Controllers
                 return NotFound();
             }
 
+            var activeRental = await _context.Rentals
+                .Include(r => r.User)
+                .Include(r => r.StartStation)
+                .FirstOrDefaultAsync(r =>
+                    r.VehicleId == id &&
+                    r.Status == RentalStatus.Active);
+
+            ViewBag.ActiveRental = activeRental;
+
             return View(vehicle);
         }
 
