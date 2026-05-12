@@ -7,7 +7,7 @@
 **Final Project:** SaigonRide - Distributed Vehicle Rental System  
 **Technology Tier:** Tier 3 - ASP.NET Core MVC Code First + Entity Framework Core  
 **Repository:** https://github.com/minhdan205/SaigonRide-System.git  
-**Live Cloud URL:** Add deployed URL here if available
+**Video Link:** https://drive.google.com/file/d/1BY6xiGvuYxPT3oZ-gZ4_f8voyfO6a6XB/view?usp=sharing
 
 SaigonRide is a smart vehicle rental management system developed for the Software Engineering Final Project. The system is designed to support a distributed network of public bicycles and electric scooters in Ho Chi Minh City. It allows users to rent vehicles from one station and return them to another station, while administrators can manage stations, vehicles, users, discount codes, reports, and support requests.
 
